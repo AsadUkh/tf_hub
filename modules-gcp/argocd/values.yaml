@@ -1,0 +1,45 @@
+global:
+  domain: "argocd.prod.nylabank.com"
+
+configs:
+  params:
+    server.insecure: true
+  secret:
+    argocdServerAdminPassword: "$2y$10$GDXk6eYX8WRNy.orbZFw9..JPhXcZcmXrv5IpKjbbA/EL43jCfhwW"
+
+server:
+  service:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: argocd.prod.nylabank.com
+  ingress:
+    enabled: true
+    controller: generic
+    ingressClassName: nginx
+    hosts:
+    - "argocd.prod.nylabank.com"
+
+    annotations:
+        kubernetes.io/ingress.class: nginx
+    path: /
+    # enabled: false
+    # ingressClassName: gce
+    # annotations:
+    #     kubernetes.io/ingress.class: gce
+    # controller: gke
+    # host: argocd.prod.nylabank.com
+    # path: /
+    # gke:
+    #   backendConfig:
+    #     healthCheck:
+    #       checkIntervalSec: 30
+    #       timeoutSec: 5
+    #       healthyThreshold: 1
+    #       unhealthyThreshold: 2
+    #       type: HTTP
+    #       requestPath: /healthz
+    #       port: 80
+    #   frontendConfig:
+    #     redirectToHttps:
+    #       enabled: true 
+    #   managedCertificate:
+    #     enabled: true

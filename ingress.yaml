@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    external-dns.alpha.kubernetes.io/hostname: argocd.prod.nylabank.com
+spec:
+  rules:
+    - host: argocd.prod.nylabank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    external-dns.alpha.kubernetes.io/hostname: nginx.prod.nylabank.com
+spec:
+  rules:
+    - host: nginx.prod.nylabank.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80

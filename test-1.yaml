@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javademo
+
+spec:
+  selector:
+    matchLabels:
+      app: javademo
+  replicas: 1 
+  template: 
+    metadata:
+      labels:
+        app: javademo
+    spec:
+      containers:
+      - name: javademo
+        image: karthequian/javademo:latest
+        ports:
+        - containerPort: 8181
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: javademo
+ annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+ type: ClusterIP
+ selector:
+   app: javademo
+ ports:
+   - name: client
+     protocol: TCP
+     port: 8181
+ selector:
+   app: javademo

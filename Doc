@@ -1,0 +1,72 @@
+certbot certonly --manual --preferred-challenges=dns --email hashemabusara@gmail.com --agree-tos --no-eff-email -d "*.prod.nylabank.com" -d "prod.nylabank.com"
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/prod.nylabank.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/prod.nylabank.com/privkey.pem
+This certificate expires on 2025-04-09.
+These files will be updated when the certificate renews.
+
+openssl pkcs12 -export -in /etc/letsencrypt/live/prod.nylabank.com/fullchain.pem -inkey /etc/letsencrypt/live/prod.nylabank.com/privkey.pem -out prod.nylabank.com.p12
+
+
+
+gsutil cp prod.nylabank.com.p12 gs://domain-wilcard-cert-bucket/
+
+
+gcloud compute ssl-certificates create nylabank-prd-wc-cert --certificate=prod.nylabank.com.p12 --private-key=prod.nylabank.com.p12
+
+-----BEGIN CERTIFICATE-----
+MIIDmjCCAyCgAwIBAgISBHhot12GWvlchk3gueg4tPmqMAoGCCqGSM49BAMDMDIx
+CzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF
+NTAeFw0yNTAxMDkxNDA2MzNaFw0yNTA0MDkxNDA2MzJaMB4xHDAaBgNVBAMMEyou
+cHJvZC5ueWxhYmFuay5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARnoN6c
+MKn1c0BaqFK6BLfKcSpakMTXeLQ9xKlyKWhObaogM9opEDle+TA5radLUeyle5hM
+JzIj0EWU1zw748N4o4ICKDCCAiQwDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQG
+CCsGAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQgug9a
+kMODD6m0zX/aLfA72EkKbjAfBgNVHSMEGDAWgBSfK1/PPCFPnQS37SssxMZwi9LX
+DTBVBggrBgEFBQcBAQRJMEcwIQYIKwYBBQUHMAGGFWh0dHA6Ly9lNS5vLmxlbmNy
+Lm9yZzAiBggrBgEFBQcwAoYWaHR0cDovL2U1LmkubGVuY3Iub3JnLzAxBgNVHREE
+KjAoghMqLnByb2QubnlsYWJhbmsuY29tghFwcm9kLm55bGFiYW5rLmNvbTATBgNV
+HSAEDDAKMAgGBmeBDAECATCCAQQGCisGAQQB1nkCBAIEgfUEgfIA8AB3AKLjCuRF
+772tm3447Udnd1PXgluElNcrXhssxLlQpEfnAAABlEuY9/IAAAQDAEgwRgIhAN+z
+LWA5HlybXLPw7zOWp4qoF53MNia/2mZnDFHGRijbAiEA//I5Az5PQLo2f1WUMZs5
+0aMoCgcOPwMrLTq+MZ/KN7gAdQDgkrP8DB3I52g2H95huZZNClJ4GYpy1nLEsE2l
+bW9UBAAAAZRLmPm1AAAEAwBGMEQCICVMQ5Pplz6RJs8ekxe2PlVuXuGttOWusDx4
+WpfJmelsAiApebEoAD8kD0zDV4X5imHiX6uzW9Md2RDjQIA9d/pHqjAKBggqhkjO
+PQQDAwNoADBlAjEAmZfBrYtJ/AgPOEikFWH7VK60ZYHSqfBuuQhC+DCpHywHhRkh
+AYkfgAaKy+ChyXLnAjB4lzguOMDqXH+Paft1/MPt4lz2FgM+zuyiO0XqzhZ8Sls4
+pSU/tPydCeptps8jD1Y=
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIEVzCCAj+gAwIBAgIRAIOPbGPOsTmMYgZigxXJ/d4wDQYJKoZIhvcNAQELBQAw
+TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
+cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw
+WhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg
+RW5jcnlwdDELMAkGA1UEAxMCRTUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAQNCzqK
+a2GOtu/cX1jnxkJFVKtj9mZhSAouWXW0gQI3ULc/FnncmOyhKJdyIBwsz9V8UiBO
+VHhbhBRrwJCuhezAUUE8Wod/Bk3U/mDR+mwt4X2VEIiiCFQPmRpM5uoKrNijgfgw
+gfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
+ATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSfK1/PPCFPnQS37SssxMZw
+i9LXDTAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcB
+AQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0g
+BAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu
+Y3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAH3KdNEVCQdqk0LKyuNImTKdRJY1C
+2uw2SJajuhqkyGPY8C+zzsufZ+mgnhnq1A2KVQOSykOEnUbx1cy637rBAihx97r+
+bcwbZM6sTDIaEriR/PLk6LKs9Be0uoVxgOKDcpG9svD33J+G9Lcfv1K9luDmSTgG
+6XNFIN5vfI5gs/lMPyojEMdIzK9blcl2/1vKxO8WGCcjvsQ1nJ/Pwt8LQZBfOFyV
+XP8ubAp/au3dc4EKWG9MO5zcx1qT9+NXRGdVWxGvmBFRAajciMfXME1ZuGmk3/GO
+koAM7ZkjZmleyokP1LGzmfJcUd9s7eeu1/9/eg5XlXd/55GtYjAM+C4DG5i7eaNq
+cm2F+yxYIPt6cbbtYVNJCGfHWqHEQ4FYStUyFnv8sjyqU8ypgZaNJ9aVcWSICLOI
+E1/Qv/7oKsnZCWJ926wU6RqG1OYPGOi1zuABhLw61cuPVDT28nQS/e6z95cJXq0e
+K1BcaJ6fJZsmbjRgD5p3mvEf5vdQM7MCEvU0tHbsx2I5mHHJoABHb8KVBgWp/lcX
+GWiWaeOyB7RP+OfDtvi2OsapxXiV7vNVs7fMlrRjY1joKaqmmycnBvAq14AEbtyL
+sVfOS66B8apkeFX2NY4XPEYV4ZSCe8VHPrdrERk2wILG3T/EGmSIkCYVUMSnjmJd
+VQD9F6Na/+zmXCc=
+-----END CERTIFICATE-----
+
+
+-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg1qOP667UM/pBVn4j
+l2Oz7XwbFbItgbuU0fEwgvWtvxOhRANCAARnoN6cMKn1c0BaqFK6BLfKcSpakMTX
+eLQ9xKlyKWhObaogM9opEDle+TA5radLUeyle5hMJzIj0EWU1zw748N4
+-----END PRIVATE KEY-----

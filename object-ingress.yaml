@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: multi-host-ingress
+  namespace: default
+  annotations:
+    # External DNS Annotation for each host
+    external-dns.alpha.kubernetes.io/hostname: "host1.example.com"
+    external-dns.alpha.kubernetes.io/hostname: "host2.example.com"
+    # SSL Certificates from GCP (each host can have its own SSL cert)
+    kubernetes.io/ingress.class: "gce"
+    # Add the certificate that GCP uses for SSL termination
+    networking.gke.io/managed-certificates: "ssl-cert-1,ssl-cert-2"
+spec:
+  rules:
+    - host: host1.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service-1
+                port:
+                  number: 80
+    - host: host2.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service-2
+                port:
+                  number: 80
+  # Specify the SSL certificates in the ingress object
+  tls:
+    - hosts:
+        - host1.example.com
+        - host2.example.com
+      secretName: tls-secret  # Replace with the actual secret name of your certificates
